@@ -15,6 +15,7 @@ An example file is included in this project, there are a few key components:
 6) Multiple templates can be generated simultaneously, if SSH is used these templates will ALL be applied. If generating a configuration & and undo configuration do not use SSH! The configuration will be applied then immediately removed! Run two instances, or do not use SSH.
 
 # Usage:
+```
 dchidell@dchidell-mac:~$ python3 config_generator.py --help
 usage: main.py [-h] [--push-config] [-i ipaddr] [-p portnumber] [-u username]
                [-pw password] [-t device_type] [-s sheetname] [-f]
@@ -50,4 +51,4 @@ optional arguments:
   -f, --feedback        Displays the result of pushing commands to a router.
 
 Written by David Chidell (dchidell@cisco.com)
-
+```
