@@ -1,0 +1,25 @@
+no vlan {vlan_rand}
+
+no vrf context {vrf}
+
+interface nve 1
+   no member vni {l3_vni} associate-vrf
+
+no interface vlan {vlan_rand}
+
+router bgp 36345
+   no vrf {vrf}
+
+no vlan {vlan}
+
+evpn
+ no vni {l2_vni} l2
+
+no vlan configuration {vlan}
+
+interface nve 1
+ no member vni {l2_vni}
+
+no interface Vlan {vlan}
+
+no track {track}

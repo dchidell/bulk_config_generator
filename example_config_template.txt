@@ -1,0 +1,62 @@
+vlan {vlan_rand}
+ vn-segment {l3_vni}
+
+vrf context {vrf}
+  vni {l3_vni}
+  rd auto
+  address-family ipv4 unicast
+    route-target both auto
+    route-target both auto evpn
+
+interface nve 1
+   member vni {l3_vni} associate-vrf
+
+interface vlan {vlan_rand}
+ no shutdown
+ no ip redirects
+ vrf member {vrf}
+ mtu 9192
+ ip forward
+ no ipv6 redirects
+
+router bgp 36345
+   vrf {vrf}
+      address-family ipv4 unicast
+        advertise l2vpn evpn
+        maximum-paths ibgp 2
+        default-information originate
+
+vlan {vlan}
+ vn-segment {l2_vni}
+
+evpn
+ vni {l2_vni} l2
+    rd auto
+    route-target import auto
+    route-target export auto
+
+vlan configuration {vlan}
+  ip igmp snooping version 2
+  ip igmp snooping querier {ip_addr}
+
+interface nve 1
+ member vni {l2_vni}
+
+
+interface Vlan {vlan}
+   no shutdown
+   no ip redirects
+   no ip unreachables
+   no ip proxy-arp
+   no ip directed-broadcast
+  vrf member {vrf}
+  ip address {ip_addr}/{mask} tag 12345
+  mtu 9000
+  fabric forwarding mode anycast-gateway
+
+
+track {track} ip route {ip_gw}/32 reachability hmm
+  vrf member {vrf}
+
+vrf context {vrf}
+  ip route 0.0.0.0/0 {ip_gw} track {track} tag {tag}
