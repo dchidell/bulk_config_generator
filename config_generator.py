@@ -139,14 +139,14 @@ def generate_config(master_list, template_input, output):
 
     # Now open a new file (the output file)
     with open(output, 'w') as f:
-        complete_output = ''
+        complete_output = []
         # Iterate over the master list and add each template instance to the output file.
         for entry in master_list:
             try:
                 # This is the really clever bit, we take the dictionary entry and push the entire dictionary to the format function.
                 out_content = content.format(**entry)
                 f.write(out_content)
-                complete_output += (out_content + '\n\n')
+                complete_output.append((out_content + '\n\n'))
             except KeyError as e:
                 print(
                     'Error: found key: {} in template file {} but not in excel spreadsheet. Remove the key in the template or add it to the excel file.'.format(
@@ -160,7 +160,7 @@ def generate_config(master_list, template_input, output):
     return complete_output
 
 
-def push_config(ip_addr, port, user, password, device_type, config, feedback):
+def push_config(ip_addr, port, user, password, device_type, config_list, feedback):
     # This function takes various router parameters and a config file and pushes the config to the box.
     # First we import the netmiko library. It's better to import at the top - but if we're not using the script to push config we don't want to depend on it
     import netmiko
@@ -178,7 +178,6 @@ def push_config(ip_addr, port, user, password, device_type, config, feedback):
     try:
         # This is where all the hard work is cone, the connection is made and config is pushed.
         connection = netmiko.ConnectHandler(**device_info)
-        output = connection.send_config_set([config])
     except netmiko.ssh_exception.NetMikoAuthenticationException:
         print('Error: Unable to authenticate to {} using specified credentials.'.format(ip_addr))
         exit(5)
@@ -186,6 +185,8 @@ def push_config(ip_addr, port, user, password, device_type, config, feedback):
         print('Error: SSH Timeout occurred. Ensure that the specified IP is available via SSH at {} on port {}'.format(
             ip_addr, port))
         exit(7)
+    for entry in config_list:
+        output = connection.send_config_set([entry])
 
     # If the feedback is set to true we'll display the entire configuration process.
     # We can see if errors occurred when pushing. Recommended for small configs only!
