@@ -156,7 +156,7 @@ def generate_config(master_list, template_input, output):
             # Put some seperators in the file to keep it readable.
             f.write('\n\n!********************\n\n\n')
         f.close()
-    # Return the raw output, we'll need it if we're pushing config to devices.
+    # Return the raw output as a list, we'll need it if we're pushing config to devices.
     return complete_output
 
 
@@ -185,13 +185,16 @@ def push_config(ip_addr, port, user, password, device_type, config_list, feedbac
         print('Error: SSH Timeout occurred. Ensure that the specified IP is available via SSH at {} on port {}'.format(
             ip_addr, port))
         exit(7)
-    for entry in config_list:
-        output = connection.send_config_set([entry])
 
+    full_cli_output = ''
+    for entry_count, entry in enumerate(config_list):
+        print('***Pushing configuration element {} of {}'.format(entry_count,len(config_list)))
+        output = connection.send_config_set([entry])
+        full_cli_output += output
     # If the feedback is set to true we'll display the entire configuration process.
     # We can see if errors occurred when pushing. Recommended for small configs only!
     if feedback is True:
-        print(output)
+        print(full_cli_output)
 
 
 def main():
