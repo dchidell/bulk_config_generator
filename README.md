@@ -17,7 +17,7 @@ An example file is included in this project, there are a few key components:
 # Usage:
 ```
 dchidell@dchidell-mac:~$ python3 config_generator.py --help
-usage: main.py [-h] [--push-config] [-i ipaddr] [-p portnumber] [-u username]
+usage: config_generator.py [-h] [--push-config] [-i ipaddr] [-p portnumber] [-u username]
                [-pw password] [-t device_type] [-s sheetname] [-f]
                spreadsheet.xlsx template.txt [template.txt ...]
 
