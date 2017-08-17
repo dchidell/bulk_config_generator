@@ -103,6 +103,12 @@ def generate_master_list(file_name, sheet_name):
                 order_dict[field.value] = field_count
         # All other rows contain data, time to process.
         else:
+            # If the first field in a row is blank we're done.
+            if len(row) > 0:
+
+                if row[0].value == None:
+                    break
+
             # This list is a list of values contained within each row.
             row_list = []
             for field in row:
@@ -154,7 +160,8 @@ def generate_config(master_list, template_input, output):
                 f.close()
                 exit(4)
             # Put some seperators in the file to keep it readable.
-            f.write('\n\n!********************\n\n\n')
+            #f.write('\n\n!********************\n\n\n') #This breaks non-cisco config. We'll stick to newlines
+            f.write('\n\n\n')
         f.close()
     # Return the raw output as a list, we'll need it if we're pushing config to devices.
     return complete_output
@@ -210,7 +217,7 @@ def main():
 
     # Read through all the template files we recieved from the CLI and generate config for each one.
     for template in args.template:
-        output_file = 'OUTPUT_{}'.format(template)
+        output_file = '{}.output'.format(template)
         print('***Generating configuration template file: {} output file: {} ...'.format(template, output_file))
         raw_output = generate_config(master_list, template, output_file)
 
@@ -225,4 +232,3 @@ def main():
 # Needed to define entry point.
 if __name__ == '__main__':
     main()
-
