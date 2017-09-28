@@ -159,6 +159,15 @@ def generate_config(master_list, template_input, output):
                         str(e), template_input))
                 f.close()
                 exit(4)
+            except ValueError as e:
+                print('Error: Could not read template file. There is probably a curly bracket missing!')
+                for line_no,line in enumerate(content.split('\n'),1):
+                    left_count = line.count('{')
+                    right_count = line.count('}')
+                    if left_count != right_count:
+                        print('Error: Found curly bracket mismatch on line {}. Line: {}'.format(line_no,line))
+
+                exit(1)
             # Put some seperators in the file to keep it readable.
             #f.write('\n\n!********************\n\n\n') #This breaks non-cisco config. We'll stick to newlines
             f.write('\n\n\n')
