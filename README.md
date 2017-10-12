@@ -16,10 +16,11 @@ An example file is included in this project, there are a few key components:
 
 # Usage:
 ```
-dchidell@dchidell-mac:~$ python3 config_generator.py --help
-usage: config_generator.py [-h] [--push-config] [-i ipaddr] [-p portnumber] [-u username]
-               [-pw password] [-t device_type] [-s sheetname] [-f]
-               spreadsheet.xlsx template.txt [template.txt ...]
+dchidell@dchidell-mac:bulk config generator$ python3 config_generator.py -h
+usage: config_generator.py [-h] [--push-config] [-i ipaddr] [-p portnumber]
+                           [-u username] [-pw password] [-t device_type]
+                           [-s sheetname] [-f]
+                           spreadsheet.xlsx template.txt [template.txt ...]
 
 Processes an excel file and uses excel entries to substitute configuration
 templates.
@@ -44,7 +45,8 @@ optional arguments:
   -pw password, --password password
                         The SSH password.
   -t device_type, --device-type device_type
-                        The type of device.
+                        The type of device. Choices: cisco_ios, cisco_nxos,
+                        cisco_xr, cisco_asa, cisco_xe, cisco_tp, cisco_s300
   -s sheetname, --sheet sheetname
                         Sets the sheet name to use (defaults to active sheet
                         if not specified)
