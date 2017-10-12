@@ -52,7 +52,7 @@ def parse_args():
     parser.add_argument('-pw', '--password', metavar='password',
                         help='The SSH password.', default='password')
     parser.add_argument('-t', '--device-type', metavar='device_type', default='cisco_ios',
-                        help='The type of device.', choices=['cisco_ios', 'cisco_nxos', 'cisco_xr', 'cisco_asa', 'cisco_xe','cisco_tp','cisco_s300'])
+                        help='The type of device. Choices: cisco_ios, cisco_nxos, cisco_xr, cisco_asa, cisco_xe, cisco_tp, cisco_s300')
     parser.add_argument('-s', '--sheet', metavar='sheetname',
                         help='Sets the sheet name to use (defaults to active sheet if not specified)', default=None)
     parser.add_argument('-f', '--feedback', action='store_true',
