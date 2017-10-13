@@ -227,6 +227,7 @@ def main():
 
     # Check if there's config to push & if we have a 'once' file.
     if args.push_config is True and args.once is True:
+        content = ''
         try:
             with open(args.once, 'r') as f:
                 content = f.read()
