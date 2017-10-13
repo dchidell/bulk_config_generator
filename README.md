@@ -16,10 +16,10 @@ An example file is included in this project, there are a few key components:
 
 # Usage:
 ```
-dchidell@dchidell-mac:bulk config generator$ python3 config_generator.py -h
+dchidell@dchidell-mac:bulk config generator$ python3 config_generator.py  -h
 usage: config_generator.py [-h] [--push-config] [-i ipaddr] [-p portnumber]
                            [-u username] [-pw password] [-t device_type]
-                           [-s sheetname] [-f]
+                           [-s sheetname] [-o filename] [-f]
                            spreadsheet.xlsx template.txt [template.txt ...]
 
 Processes an excel file and uses excel entries to substitute configuration
@@ -50,6 +50,10 @@ optional arguments:
   -s sheetname, --sheet sheetname
                         Sets the sheet name to use (defaults to active sheet
                         if not specified)
+  -o filename, --once filename
+                        Reads the specified file and runs the commands once
+                        only for each SSH session. (Only applicable when using
+                        SSH to a box)
   -f, --feedback        Displays the result of pushing commands to a router.
 
 Written by David Chidell (dchidell@cisco.com)

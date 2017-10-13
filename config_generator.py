@@ -55,6 +55,8 @@ def parse_args():
                         help='The type of device. Choices: cisco_ios, cisco_nxos, cisco_xr, cisco_asa, cisco_xe, cisco_tp, cisco_s300')
     parser.add_argument('-s', '--sheet', metavar='sheetname',
                         help='Sets the sheet name to use (defaults to active sheet if not specified)', default=None)
+    parser.add_argument('-o', '--once', metavar='filename',
+                        help='Reads the specified file and runs the commands once only for each SSH session. (Only applicable when using SSH to a box)', default=None)
     parser.add_argument('-f', '--feedback', action='store_true',
                         help='Displays the result of pushing commands to a router.')
     return parser.parse_args()
@@ -222,6 +224,19 @@ def main():
     print('***Reading Master Excel spreadsheet {}...'.format(args.definition))
     master_list = generate_master_list(args.definition, args.sheet)
     print('***Read {} entries from master list...'.format(len(master_list)))
+
+    # Check if there's config to push & if we have a 'once' file.
+    if args.push_config is True and args.once is True:
+        try:
+            with open(args.once, 'r') as f:
+                content = f.read()
+                f.close()
+        except FileNotFoundError:
+            print('Error: Unable to open once file: {}'.format(args.once))
+            exit(3)
+        print('***Pushing one time configuration to device...')
+        push_config(args.ip_address, args.port, args.username, args.password, args.device_type, content,
+                        args.feedback)
 
     # Read through all the template files we recieved from the CLI and generate config for each one.
     for template in args.template:
